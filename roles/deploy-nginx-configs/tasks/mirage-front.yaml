@@ -1,0 +1,11 @@
+- name: Apply Nginx template (front)
+  template:
+    src: '{{ nginx_front }}.j2'
+    dest: '{{ nginx_path }}/{{ nginx }}'
+  notify: Reload Nginx
+- name: Install nginx server (front)
+  template:
+    src: '{{ mirage_front }}.j2'
+    dest:  '{{ server_path }}/mirage_front.conf'
+  notify: Reload Nginx
+

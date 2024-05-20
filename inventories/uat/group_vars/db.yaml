@@ -1,0 +1,30 @@
+### Deploy-postgres_exporter vars
+DIRECTORY_POSTGRES_EXPORTER: "/apps/postgres_exporter"
+POSTGRES_EXPORTER_PATH: "https://repo.unix.nspk.ru/repository/nspk-raw-third/prometheus/postgres_exporter"
+POSTGRES_EXPORTER_FILE: "postgres_exporter_v0.9.0_linux-amd64.tar.gz"
+POSTGRES_EXPORTER_PORT: 9187
+POSTGRES_EXPORTER_POSTGRES_USER: "svc_mirage_uat_mon"
+POSTGRES_EXPORTER_POSTGRES_PASSWORD: "{{ lookup('hashi_vault', '{{ vault_postgres_password_path }} auth_method=ldap mount_point=ldap username={{ vault_login }} password={{ ipa_password }} url={{ vault_path }} validate_certs=True cacert=/etc/ssl/certs/ca-bundle.crt')}}"
+POSTGRES_EXPORTER_POSTGRES_HOST: "{{inventory_hostname}}"
+POSTGRES_EXPORTER_POSTGRES_PORT: 5432
+POSTGRES_EXPORTER_POSTGRES_DBNAME: "miragedb"
+POSTGRES_EXPORTER_POSTGRES_SSLMODE: disable
+DIRECTORY_TMP_INSTALL: /tmp/install
+vault_postgres_password_path: "secret=mirage/data/mirage_uat/accounts/postgresql:password"
+### Deploy-sql_exporter vars
+DIRECTORY_SQL_EXPORTER: "/apps/sql_exporter"
+SQL_EXPORTER_PATH: "https://repo.unix.nspk.ru/repository/nspk-raw-third/github.com/burningalchemist/sql_exporter"
+SQL_EXPORTER_FILE: "sql_exporter-0.10.1.linux-amd64.tar.gz"
+SQL_EXPORTER_PORT: 9237
+SQL_EXPORTER_POSTGRES_PASSWORD: "{{ lookup('hashi_vault', '{{ vault_postgres_password_path }} auth_method=ldap mount_point=ldap username={{ vault_login }} password={{ ipa_password }} url={{ vault_path }} validate_certs=True cacert=/etc/ssl/certs/ca-bundle.crt')}}"
+SQL_EXPORTER_POSTGRES_USER: "svc_mirage_uat_mon"
+SQL_EXPORTER_POSTGRES_HOST: "{{inventory_hostname}}"
+SQL_EXPORTER_POSTGRES_PORT: 5432
+SQL_EXPORTER_POSTGRES_DBNAME: "miragedb"
+SQL_EXPORTER_POSTGRES_SSLMODE: disable
+### Vault vars
+vault_path: "https://vault.unix.nspk.ru"
+vault_login: svc_mirage_uat
+### Vmagent file
+vmagent: vmagent-db.yaml
+

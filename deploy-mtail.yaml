@@ -1,0 +1,4 @@
+- name: Install mtail
+  hosts: all
+  roles:
+    - deploy-mtail

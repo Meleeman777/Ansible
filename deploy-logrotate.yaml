@@ -1,0 +1,5 @@
+- name: Install Logrotate
+  hosts: all
+  roles:
+    - deploy-logrotate
+

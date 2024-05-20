@@ -1,0 +1,20 @@
+- name: Make Kafka Cert dir
+  file: 
+    path: "{{ kafka_cert_path }}"
+    state: directory
+- name: Get cert and key
+  set_fact:
+    cert:  "{{ lookup('hashi_vault', '{{ vault_kafka_cert_path }} auth_method=ldap mount_point=ldap username={{ vault_login }} password={{ ipa_password }} url={{ vault_path }} validate_certs=True cacert=/etc/ssl/certs/ca-bundle.crt')}}"
+    key:  "{{ lookup('hashi_vault', '{{ vault_kafka_key_path }} auth_method=ldap mount_point=ldap username={{ vault_login }} password={{ ipa_password }} url={{ vault_path }} validate_certs=True cacert=/etc/ssl/certs/ca-bundle.crt')}}"
+    bundle: "{{ lookup('hashi_vault', '{{ vault_bundle_path }} auth_method=ldap mount_point=ldap username={{ vault_login }} password={{ ipa_password }} url={{ vault_path }} validate_certs=True cacert=/etc/ssl/certs/ca-bundle.crt')}}"
+- name: Copy cert and key
+  copy:
+    content: "{{ item.content }}"
+    dest: "{{ item.dest }}"
+  loop:
+    - content: "{{ cert }}"
+      dest: "{{ kafka_cert_path }}/{{ kafka_cert }}"
+    - content: "{{ key }}"
+      dest: "{{ kafka_cert_path }}/{{ kafka_key }}"
+    - content: "{{ bundle }}"
+      dest: "{{ kafka_cert_path }}/{{ bundle_file }}"

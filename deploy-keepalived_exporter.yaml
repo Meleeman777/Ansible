@@ -1,0 +1,4 @@
+- name: Install KP exporter
+  hosts: all
+  roles:
+    - deploy-keepalived_exporter

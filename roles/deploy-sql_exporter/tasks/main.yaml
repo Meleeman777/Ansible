@@ -1,0 +1,54 @@
+- name: Create directories and change file ownership, group and permissions
+  file:
+    path: "{{ DIRECTORY_SQL_EXPORTER }}"
+    state: directory
+- name: Download and Extract files
+  block:
+    - name: Download files
+      get_url:
+        url: "{{SQL_EXPORTER_PATH}}/{{SQL_EXPORTER_FILE}}"
+        dest: "{{DIRECTORY_TMP_INSTALL}}/{{SQL_EXPORTER_FILE}}"
+    - name: Extract files
+      unarchive:
+        src: "{{DIRECTORY_TMP_INSTALL}}/{{SQL_EXPORTER_FILE}}"
+        dest: "{{DIRECTORY_TMP_INSTALL}}"
+        remote_src: yes
+- name: Create files
+  block:
+    - name: config.collector.yml file
+      template:
+        src: config.collector.yml.j2
+        dest: "{{DIRECTORY_SQL_EXPORTER}}/configs.collector.yml"
+    - name: sql_exporter.yml file
+      template:
+        src: sql_exporter.yml.j2
+        dest: "{{DIRECTORY_SQL_EXPORTER}}/sql_exporter.yml"
+- name: Copy SqlExporter file
+  copy:
+    src: '{{DIRECTORY_TMP_INSTALL}}/sql_exporter-0.10.1.linux-amd64/sql_exporter'
+    dest: '{{DIRECTORY_SQL_EXPORTER}}/'
+    mode: '0770'
+    remote_src: true
+- name: sql_exporter.service file
+  template:
+    src: sql_exporter.service.j2
+    dest: "/etc/systemd/system/sql_exporter.service"
+- name: SqlExporter service is enabled
+  systemd:
+    name: sql_exporter
+    enabled: yes
+    daemon_reload: true
+- name: SqlExporter service is restarted
+  systemd:
+    name: sql_exporter
+    state: restarted
+- name: Get SqlExporter Service Status
+  systemd:
+    name: "sql_exporter"
+  register: sql_exporter_get_status
+  tags:
+    - sql_exporter_get_status
+- name: SqlExporter deploy status
+  fail:
+    msg: "sql_exporter deploy status - fail"
+  when: sql_exporter_get_status.status.ActiveState != "active"

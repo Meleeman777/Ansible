@@ -1,0 +1,53 @@
+- name: Create dirs
+  file:
+    path: '{{ mtail_dir }}/progs'
+    state: directory
+- name: Get mtail archive
+  get_url:
+    url: '{{ mtail_url }}{{ mtail_archive }}'
+    dest: '{{ mtail_dir }}'
+- name: Unzip mtail archive
+  unarchive:
+    remote_src: true
+    src: '{{ mtail_dir  }}/{{ mtail_archive }}'
+    dest: '{{ mtail_dir }}'
+- name: Delete archive
+  file:
+    state: absent
+    path: '{{ mtail_dir }}/{{ mtail_archive }}'
+- name: Copy configs
+  copy:
+    src: '{{ item }}'
+    dest: '{{ mtail_dir}}/progs/'
+  loop:
+    - nginx.conf
+    - nginx.mtail
+- name: Copy service to systemd
+  copy:
+    src: '{{ mtail_service_file }}'
+    dest: '{{ mtail_systemd_path }}/'
+- name: chown and chmod folder
+  shell: |
+      sudo chmod ug+rx '{{ mtail_dir }}'
+      sudo chown -R nspkop:nspkop '{{ mtail_dir }}'
+      sudo setfacl -R -m u:www-data:rwx /apps/mtail
+- name: reload nginx
+  service:
+    name: nginx
+    state: reloaded
+- name: reload systemd daemons
+  systemd:
+    daemon_reload: true
+- name: Enable service mtail
+  service:
+    name: mtail.service
+    enabled: true
+- name: Restart service mtail
+  service:
+    name: mtail.service
+    state: restarted
+# Включить чтобы поменять права для новых логов на www-data
+#- name: change owner of logs
+#  shell: |
+#      sudo rm /apps/nginx_log/mtail.log
+#      sudo nginx -s reopen

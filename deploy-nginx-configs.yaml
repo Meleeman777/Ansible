@@ -1,0 +1,4 @@
+- name: Install nginx-configs
+  hosts: all
+  roles:
+    - deploy-nginx-configs

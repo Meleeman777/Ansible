@@ -1,0 +1,14 @@
+- target_label: env
+  replacement: {{ vm_env }}
+- target_label: group
+  replacement: {{ vm_group }}
+- source_labels: [job]
+  target_label: system
+- source_labels: [instance]
+  target_label: inst
+  regex: ([^:]+)(:[0-9]+)?
+  replacement: $1
+- source_labels: [instance]
+  regex: (^[a-zA-Z0-9]{4}).*
+  replacement: $1
+  target_label: dc

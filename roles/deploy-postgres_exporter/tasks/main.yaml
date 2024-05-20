@@ -1,0 +1,50 @@
+- name: Create directories and change file ownership, group and permissions
+  file:
+    path: "{{ DIRECTORY_POSTGRES_EXPORTER }}"
+    state: directory
+- name: Download and Extract files
+  block:
+    - name: Download files
+      get_url:
+        url: "{{POSTGRES_EXPORTER_PATH}}/{{POSTGRES_EXPORTER_FILE}}"
+        dest: "{{DIRECTORY_TMP_INSTALL}}/{{POSTGRES_EXPORTER_FILE}}"
+    - name: Extract files
+      unarchive:
+        src: "{{DIRECTORY_TMP_INSTALL}}/{{POSTGRES_EXPORTER_FILE}}"
+        dest: "{{DIRECTORY_TMP_INSTALL}}"
+        remote_src: yes
+- name: var_file file
+  template:
+    src: var_file.j2
+    dest: "{{DIRECTORY_POSTGRES_EXPORTER}}/var_file"
+- name: Copy PostgreExporter file
+  copy:
+    src: '{{DIRECTORY_TMP_INSTALL}}/postgres_exporter-0.9.0.linux-amd64/postgres_exporter'
+    dest: '{{ DIRECTORY_POSTGRES_EXPORTER }}/'
+    mode: '0770'
+    remote_src: true
+- name: postgres_exporter.service file
+  template:
+    src: postgres_exporter.service.j2
+    dest: "/etc/systemd/system/postgres_exporter.service"
+- name: PostgreExporter service is enabled
+  systemd:
+    name: postgres_exporter
+    enabled: yes
+    daemon_reload: true
+- name: PostgreExporter service is restarted
+  systemd:
+    name: postgres_exporter
+    state: restarted
+  tags:
+    - postgres_exporter_restarted
+- name: Get PostgreExporter Service Status
+  systemd:
+    name: "postgres_exporter"
+  register: postgres_exporter_get_status
+  tags:
+    - postgres_exporter_get_status
+- name: PostgreExporter deploy status
+  fail:
+    msg: "postgres_exporter deploy status - fail"
+  when: postgres_exporter_get_status.status.ActiveState != "active"

@@ -1,0 +1,4 @@
+- name: Install sql_exporter
+  hosts: all
+  roles:
+    - deploy-sql_exporter

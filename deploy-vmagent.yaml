@@ -1,0 +1,4 @@
+- name: Install VMagent
+  hosts: all
+  roles:
+    - deploy-vmagent

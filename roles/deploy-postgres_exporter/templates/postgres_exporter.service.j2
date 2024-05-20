@@ -1,0 +1,13 @@
+[Unit]
+Description=Prometheus PostgreSQL Exporter
+After=network.target
+
+[Service]
+Type=simple
+User=root
+Group=root
+EnvironmentFile={{DIRECTORY_POSTGRES_EXPORTER}}/var_file
+ExecStart={{DIRECTORY_POSTGRES_EXPORTER}}/postgres_exporter --web.listen-address={{inventory_hostname}}:{{POSTGRES_EXPORTER_PORT}}
+
+[Install]
+WantedBy=multi-user.target

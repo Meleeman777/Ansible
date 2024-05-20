@@ -1,0 +1,23 @@
+[Unit]
+Description=VMagent
+After=network.target
+
+[Service]
+User=nspkop
+Group=nspkop
+Type=simple
+EnvironmentFile=/apps/vmagent_systemd/.env
+ExecStart=/apps/vmagent_systemd/vmagent-prod \
+-httpListenAddr=:${PORT} \
+-promscrape.config=${DIRECTORY_VMAGENT}/vmagent.yml \
+-remoteWrite.tmpDataPath=${DIRECTORY_VMAGENT}/tmp \
+-remoteWrite.maxDiskUsagePerURL=1GB \
+-remoteWrite.url=https://${RW_URL}:8428/api/v1/write \
+-remoteWrite.bearerToken=${TOKEN} \
+-remoteWrite.flushInterval=15s \
+-remoteWrite.urlRelabelConfig=${DIRECTORY_VMAGENT}/relabel.yml \
+-remoteWrite.tlsCAFile=/etc/ipa/ca.crt \
+-remoteWrite.sendTimeout=15s
+[Install]
+WantedBy=multi-user.target
+

@@ -1,0 +1,13 @@
+### Deploy blackbox_exporter vars
+blackbox_dir: /apps/blackbox_exporter
+blackbox_url: https://repo.idc.nspk.ru/repository/ubuntu-jammy/pool/universe/p/prometheus-blackbox-exporter/
+blackbox_package: prometheus-blackbox-exporter_0.19.0-1_amd64.deb
+blackbox_service_file: prometheus-blackbox-exporter.service
+blackbox_systemd_path: /etc/systemd/system/multi-user.target.wants
+blackbox_targets:
+  - https://ec01-miragekfk01.idc.nspk.ru:8081/subjects
+  - https://ec01-miragekfk02.idc.nspk.ru:8081/subjects
+  - https://ec01-miragekfk03.idc.nspk.ru:8081/subjects
+blackbox_file: blackbox.yaml
+vm_url: "ec01-mon-prx.idc.nspk.ru"
+

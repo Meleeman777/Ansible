@@ -1,0 +1,11 @@
+[Unit]
+Description=keepalived_exporter
+After=network.target
+ 
+[Service]
+User=root
+Group=root
+Type=simple
+ExecStart=/apps/keepalived_exporter/keepalived-exporter
+[Install]
+WantedBy=multi-user.target

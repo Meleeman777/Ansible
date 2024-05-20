@@ -1,0 +1,7 @@
+---
+# handlers file for deploy-nginx-configs
+- name: Reload Nginx
+  service:
+    name: nginx
+    state: reloaded
+  become: true

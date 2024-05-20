@@ -1,0 +1,4 @@
+- name: Deploy blackbox_exporter
+  hosts: kafka_ec01[0],kafka_ec02[0],nginx_portal_ec01[0],nginx_portal_ec02[0]
+  roles:
+    - deploy-blackbox_exporter

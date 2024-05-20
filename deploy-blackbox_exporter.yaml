@@ -1,0 +1,4 @@
+- name: Deploy blackbox_exporter
+  hosts: nginx[0],kafka[0]
+  roles:
+    - deploy-blackbox_exporter

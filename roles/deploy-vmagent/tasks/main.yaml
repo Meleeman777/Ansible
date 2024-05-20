@@ -1,0 +1,48 @@
+- name: Creates VMdirectory
+  file:
+    path: '{{ vm_path }}/tmp'
+    state: directory
+- name: Get Vmutils
+  get_url:
+    url: '{{ vmagent_url }}{{ vmagent_archive }}'
+    dest: '{{ vm_path }}'
+- name: Unzip Vmutils
+  unarchive:
+    remote_src: true
+    src: '{{ vm_path }}/{{  vmagent_archive }}'
+    dest: '{{ vm_path }}'
+- name: Delete archive
+  file:
+    state: absent
+    path: '{{ vm_path }}/{{  vmagent_archive }}'
+- name: Copy templates
+  template:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+  loop:
+    - { src: '{{ relabel }}.j2', dest: '{{ vm_path }}/{{ relabel}}' }
+    - { src: '{{ vmagent }}.j2', dest: '{{ vm_path }}/vmagent.yml' }
+    - { src: '{{ env }}.j2', dest: '{{ vm_path }}/{{ env }}' }
+- name: chown and chmod folder
+  shell: |
+      sudo chmod ug+rx '{{ vm_path }}'
+      sudo chown -R nspkop:nspkop /apps/vmagent_systemd
+- name: Enable env.vars
+  shell: |
+      cd /apps/vmagent_systemd/
+      export $(grep -v '^#' .env | xargs)
+- name: Copy service
+  template:
+    src: '{{ vm_service }}.j2'
+    dest: '{{ system_path }}/{{ vm_service }}'
+- name: reload systemd daemons
+  systemd:
+    daemon_reload: true
+- name: Enable service vmagent
+  service:
+    name: vmagent
+    enabled: true
+- name: Restart service vmagent
+  service:
+    name: vmagent
+    state: restarted

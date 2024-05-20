@@ -1,0 +1,24 @@
+- name: Change log directory ownership
+  file:
+    path: /apps/nginx_log
+    owner: www-data
+    group: adm
+    mode: '0775'
+- name: Creates arch directory
+  file:
+    path: '{{ arch_dir }}'
+    state: directory
+    owner: www-data
+    group: adm
+    mode: 0775
+- name: Apply logrotate config
+  template:
+    src: '{{ logrotate_file }}.j2'
+    dest: '{{ logrotate_path }}/{{ logrotate_file }}'
+- name: Create cron for logrotate
+  cron:
+    name: "logrotate"
+    minute: "0"
+    hour: "0"
+    job: "/usr/sbin/logrotate -f /etc/logrotate.d/nginx"
+

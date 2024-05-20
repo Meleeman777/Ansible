@@ -1,0 +1,4 @@
+- name: Install JMX_exporter
+  hosts: all
+  roles:
+    - deploy-jmx_exporter

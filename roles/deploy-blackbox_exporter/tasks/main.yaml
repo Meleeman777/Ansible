@@ -1,0 +1,59 @@
+- name: Creates blackbox_exporter dir
+  file:
+    path: '{{ blackbox_dir }}'
+    state: directory
+- name: Get blackbox_exporter package
+  get_url:
+    url: '{{ blackbox_url }}{{ blackbox_package }}'
+    dest: '{{ blackbox_dir }}'
+- name: install blackbox_exporter package
+  apt:
+    deb: '{{ blackbox_dir }}/{{ blackbox_package }}'
+- name: Delete package
+  file:
+    state: absent
+    path: '{{ blackbox_dir }}/{{ blackbox_package }}'
+- name: Copy blackbox file
+  template:
+    src: '{{ blackbox_file }}'
+    dest: '{{ blackbox_dir }}/{{ blackbox_file }}'
+- name: Copy service to systemd
+  template:
+    src: '{{ blackbox_service_file }}.j2'
+    dest: '{{ blackbox_systemd_path }}/{{ blackbox_service_file }}'
+- name: Change vmagent file permission
+  file:
+    path: '{{ vm_path }}/vmagent.yml'
+    owner: nspkop
+    group: nspkop
+- name: reload systemd daemons
+  systemd:
+    daemon_reload: true
+- name: Restart service blackbox_exporter
+  service:
+    name: '{{ blackbox_service_file }}'
+    state: restarted
+- name: Get blackbox Service Status
+  systemd:
+    name: "'{{ blackbox_service_file }}'"
+  register:  '{{ blackbox_service_file }}_get_status'
+  tags:
+    - '{{ blackbox_service_file }}_get_status'
+- name:  '{{ blackbox_service_file }} deploy status'
+  fail:
+    msg: "{{ blackbox_service_file }} deploy status - {{ blackbox_service_file_get_status.status.ActiveState }}"
+  when: '{{ blackbox_service_file}}_get_status.status.ActiveState != "active"'
+- name: Restart prometheus-blackbox-exporter.service
+  service:
+    name: '{{ vm_service }}'
+    state: restarted
+- name: 'Get {{ blackbox_service_file }} Service Status'
+  systemd:
+    name: "{{ vm_service }}"
+  register: vmagent_get_status
+  tags:
+    - vmagent_get_status
+- name: vmagent deploy status
+  fail:
+    msg: "vmagent deploy status - {{vmagent_get_status.status.ActiveState}}"
+  when: vmagent_get_status.status.ActiveState != "active"

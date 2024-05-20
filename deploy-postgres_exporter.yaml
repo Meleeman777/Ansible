@@ -1,0 +1,4 @@
+- name: Install postgres_exporter
+  hosts: all
+  roles:
+    - deploy-postgres_exporter

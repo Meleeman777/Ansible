@@ -1,0 +1,48 @@
+collector_name: postgres_queries_perfomance
+
+# Similar to global.min_interval, but applies to the queries defined by this collector only.
+#min_interval: 0s
+
+metrics:
+  - metric_name: pg_stat_statements_gauge
+    type: gauge
+    help: 'gauge'
+    key_labels:
+      - datname
+      - short_query
+      - queryid
+    value_label: operation
+    values:
+      - min_time
+      - max_time
+      - mean_time
+    query_ref: dbstats
+
+  - metric_name: pg_stat_statements_counter
+    type: counter
+    help: 'counter'
+    key_labels:
+      - datname
+      - short_query
+      - queryid
+    value_label: operation
+    values:
+      - calls
+      - total_time
+    query_ref: dbstats
+
+
+queries:
+  - query_name: dbstats
+    query: |
+      SELECT queryid, datname,
+      left(trim(regexp_replace(query,'\s+',' ', 'g' )),100) as short_query,
+      sum(calls) as calls,
+      sum(total_exec_time) as total_time,
+      min(min_exec_time) as min_time,
+      max(max_exec_time) as max_time,
+      sum(mean_exec_time*calls)/sum(calls) as mean_time
+      FROM pg_stat_statements
+      JOIN pg_database
+      ON pg_stat_statements.dbid = pg_database.oid
+      group by queryid, short_query, datname

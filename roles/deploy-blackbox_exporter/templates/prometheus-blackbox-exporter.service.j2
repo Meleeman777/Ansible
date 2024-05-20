@@ -1,0 +1,13 @@
+[Unit]
+Description=Blackbox exporter for Prometheus
+Documentation=https://prometheus.io/docs/introduction/overview/ man:prometheus-blackbox-exporter(1)
+Wants=network-online.target
+After=network-online.target
+[Service]
+Restart=always
+User=root
+Group=root
+ExecStart=/usr/bin/prometheus-blackbox-exporter --config.file={{ blackbox_dir}}/blackbox.yaml
+Type=simple
+[Install]
+WantedBy=multi-user.target

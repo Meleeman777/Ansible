@@ -1,0 +1,17 @@
+jmx_dir: /apps/jmx_exporter
+broker: broker.yml
+zookeeper: zookeeper.yml
+jmx_agent: jmx_prometheus_javaagent_java6-0.17.2.jar
+jmx_server: jmx_prometheus_httpserver_java6-0.17.2.jar
+kafka_service_file: override_kafka.conf
+zoo_service_file: override_zookeeper.conf
+kafka_systemd_path: /etc/systemd/system/confluent-kafka.service.d
+zoo_systemd_path: /etc/systemd/system//confluent-zookeeper.service.d
+log_dir: /var/log/kafka
+jmx_systemd_path: /etc/systemd/system
+
+jmx_kafka_port: 9405
+jmx_zoo_port: 9406
+zoo_metric_port: 8079
+kafka_metric_port: 8080
+

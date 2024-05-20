@@ -1,0 +1,11 @@
+[Unit]
+Description=Sage Metrics mtail
+After=network.target
+   
+[Service]
+User=nspkop
+Group=nspkop
+Type=simple
+ExecStart=/apps/mtail/mtail --port 9101 --progs /apps/mtail/progs --logs /apps/nginx_log/mtail.log
+[Install]
+WantedBy=multi-user.target

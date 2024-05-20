@@ -1,0 +1,6 @@
+- name: Performing Tasks for Kafka
+  include_tasks: kafka.yaml
+  when: inventory_hostname in groups["kafka"]
+- name: Performing Tasks for Nginx
+  include_tasks: nginx.yaml
+  when: inventory_hostname in groups["nginx"]

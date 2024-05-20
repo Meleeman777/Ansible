@@ -1,0 +1,4 @@
+logrotate_file: nginx
+logrotate_path: /etc/logrotate.d
+arch_dir: /apps/nginx_log/arch
+

@@ -1,0 +1,12 @@
+[Unit]
+Description=Prometheus PostgreSQL Exporter
+After=network.target
+
+[Service]
+Type=simple
+User=root
+Group=root
+ExecStart={{DIRECTORY_SQL_EXPORTER}}/sql_exporter -config.file {{DIRECTORY_SQL_EXPORTER}}/sql_exporter.yml --web.listen-address={{inventory_hostname}}:{{SQL_EXPORTER_PORT}}
+
+[Install]
+WantedBy=multi-user.target

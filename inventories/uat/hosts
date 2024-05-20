@@ -1,0 +1,18 @@
+[nginx:children]
+nginx_portal
+nginx_front
+[nginx_portal]
+msk1-mirageuiprx1.unix.nspk.ru vmagent=vmagent-blackbox-nginx.yaml
+msk1-mirageuiprx2.unix.nspk.ru
+[nginx_front]
+msk1-mirageufprx3.unix.nspk.ru
+msk1-mirageufprx4.unix.nspk.ru
+[db]
+msk1-mirageudb01.unix.nspk.ru
+[kafka]
+msk1-mirageukfk01.unix.nspk.ru vmagent=vmagent-blackbox-kafka.yaml
+msk1-mirageukfk02.unix.nspk.ru
+msk1-mirageukfk03.unix.nspk.ru
+[blackbox]
+msk1-mirageuiprx1.unix.nspk.ru
+msk1-mirageukfk01.unix.nspk.ru

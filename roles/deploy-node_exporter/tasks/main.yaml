@@ -1,0 +1,39 @@
+- name: Creates node_exporter dir
+  file:
+    path: '{{ nodeexp_dir }}'
+    state: directory
+- name: Get node_exporter archive
+  get_url:
+    url: '{{ nodeexp_url }}{{ nodeexp_archive }}'
+    dest: '{{ nodeexp_dir }}'
+- name: Unzip node_exporter archive
+  unarchive:
+    remote_src: true
+    src: '{{ nodeexp_dir }}/{{ nodeexp_archive }}'
+    dest: '{{  nodeexp_dir }}'
+- name: Delete archive
+  file:
+    state: absent
+    path: '{{ nodeexp_dir }}/{{ nodeexp_archive }}'
+- name: Copy node_exporter files
+  copy:
+    src: '{{ nodeexp_dir }}/{{ nodeexp_file }}/node_exporter'
+    dest: '{{ nodeexp_dir }}/'
+    mode: '0700'
+    remote_src: true
+- name: Copy service to systemd
+  copy:
+    src: '{{ nodeexp_service_file }}'
+    dest: '{{ nodeexp_systemd_path }}/'
+- name: reload systemd daemons
+  systemd:
+    daemon_reload: true
+- name: Enable service node_exporter
+  service:
+    name: node_exporter
+    enabled: true
+- name: Restart service node_exporter
+  service:
+    name: node_exporter
+    state: restarted
+

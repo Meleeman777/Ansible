@@ -1,0 +1,38 @@
+- name: Creates jmx_exporter dir
+  file:
+    path: '{{ jmx_dir }}'
+    state: directory
+- name: Get javaagent
+  get_url:
+    url: '{{ javaagent_url }}{{ javaagent_file }}'
+    dest: '{{ jmx_dir }}'
+    mode: '0755'
+- name: Copy broker and zookeeper files
+  template:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+    mode: '0755'
+  loop:
+    - { src: '{{ broker }}.j2', dest: '{{ jmx_dir }}/{{ broker }}' }
+    - { src: '{{ zookeeper }}.j2', dest: '{{ jmx_dir }}/{{ zookeeper }}' }
+    - { src: '{{ schema_registry }}.j2', dest: '{{ jmx_dir }}/{{ schema_registry }}' }
+- name: Add string to configs
+  lineinfile:
+    line: '{{ item.line }}'
+    dest: '{{ item.dest }}'
+  loop:
+    - { line: 'Environment="KAFKA_OPTS=-javaagent:{{ jmx_dir }}/{{ javaagent_file }}={{ kafka_metric_port }}:{{ jmx_dir }}/{{ broker }}"', dest: '{{ kafka_systemd_path }}' }
+    - { line: 'Environment="KAFKA_OPTS=-javaagent:{{ jmx_dir }}/{{ javaagent_file }}={{ zoo_metric_port }}:{{ jmx_dir }}/{{ zookeeper }}"', dest: '{{ zoo_systemd_path }}' }
+    - { line: 'Environment="SCHEMA_REGISTRY_OPTS=-javaagent:{{ jmx_dir }}/{{ javaagent_file }}={{ schema_registry_metric_port }}:{{ jmx_dir }}/{{ schema_registry }}"', dest: '{{ schema_systemd_path }}' }
+- name: reload systemd daemons
+  systemd:
+    daemon_reload: true
+- name: restart services
+  service:
+    name: "{{ item }}"
+    state: restarted
+  loop:
+    - confluent-kafka.service
+    - confluent-zookeeper.service
+    - confluent-schema-registry.service
+

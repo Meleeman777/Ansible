@@ -1,0 +1,16 @@
+/apps/nginx_log/*.log {
+  daily
+  compress
+  create 0644 www-data adm
+  missingok
+  dateext
+  dateformat -%Y%m%d-%H%M%S
+  notifempty
+  olddir /apps/nginx_log/arch
+  rotate 30
+  sharedscripts
+  su www-data adm
+  postrotate
+     systemctl reload nginx
+  endscript
+}

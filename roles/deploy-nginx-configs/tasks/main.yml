@@ -1,0 +1,8 @@
+- name: Performing Tasks for Portal
+  include_tasks: mirage-portal.yaml
+  when: inventory_hostname in groups["nginx_portal"]
+  notify: Reload Nginx
+- name: Performing Tasks for second host
+  include_tasks: mirage-front.yaml
+  when: inventory_hostname in groups["nginx_front"]
+

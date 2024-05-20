@@ -1,0 +1,41 @@
+- name: Creates keepalived_exporter dir
+  file:
+    path: '{{ keep_dir }}'
+    state: directory
+- name: Get keepalived_exporter archive
+  get_url:
+    url: '{{ keep_url }}{{ keep_archive }}'
+    dest: '{{ keep_dir }}'
+- name: Unzip keepalived_exporter archive
+  unarchive:
+    remote_src: true
+    src: '{{ keep_dir }}/{{ keep_archive }}'
+    dest: '{{ keep_dir }}'
+- name: Delete archive
+  file:
+    state: absent
+    path: '{{ keep_dir }}/{{ keep_archive }}'
+    src: '{{  keep_file }}.tar.gz'
+    dest: '{{  keep_dir }}/'
+- name: Copy keepalived_exporter files
+  copy:
+    src: '{{ keep_dir }}/{{ keep_file }}/keepalived-exporter'
+    dest: '{{ keep_dir }}/'
+    mode: '0700'
+    remote_src: true
+- name: Copy service to systemd
+  copy:
+    src: '{{ keep_service_file }}'
+    dest: '{{ keep_systemd_path }}/'
+- name: reload systemd daemons
+  systemd:
+    daemon_reload: true
+- name: Enable service keepalived_exporter
+  service:
+    name: keepalived_exporter.service
+    enabled: true
+- name: Restart service keepalived_exporter
+  service:
+    name: keepalived_exporter.service
+    state: restarted
+

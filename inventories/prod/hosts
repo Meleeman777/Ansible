@@ -1,0 +1,39 @@
+[nginx:children]
+nginx_portal
+nginx_front
+[nginx_portal:children]
+nginx_portal_ec01
+nginx_portal_ec02
+[nginx_front:children]
+nginx_front_ec01
+nginx_front_ec02
+[nginx_portal_ec01]
+ec01-mirageiprx1.idc.nspk.ru vmagent=vmagent-blackbox-nginx.yaml
+ec01-mirageiprx2.idc.nspk.ru
+[nginx_front_ec01]
+ec01-miragefprx3.idc.nspk.ru
+ec01-miragefprx4.idc.nspk.ru
+[nginx_portal_ec02]
+ec02-mirageiprx1.idc.nspk.ru vmagent=vmagent-blackbox-nginx.yaml
+ec02-mirageiprx2.idc.nspk.ru
+[nginx_front_ec02]
+ec02-miragefprx3.idc.nspk.ru
+ec02-miragefprx4.idc.nspk.ru
+[kafka:children]
+kafka_ec01
+kafka_ec02
+[kafka_ec01]
+ec01-miragekfk01.idc.nspk.ru vmagent=vmagent-blackbox-kafka.yaml
+ec01-miragekfk02.idc.nspk.ru
+ec01-miragekfk03.idc.nspk.ru
+[kafka_ec02]
+ec02-miragekfk01.idc.nspk.ru vmagent=vmagent-blackbox-kafka.yaml
+ec02-miragekfk02.idc.nspk.ru
+ec02-miragekfk03.idc.nspk.ru
+[db:children]
+db_ec01
+db_ec02
+[db_ec01]
+ec01-miragedb01.idc.nspk.ru
+[db_ec02]
+ec02-miragedb01.idc.nspk.ru

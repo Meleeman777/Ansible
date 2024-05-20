@@ -1,0 +1,26 @@
+### Deploy Certs vars
+kafka_cert_path: /apps/confluent/etc/kafka
+vault_path: "https://vault.idc.nspk.ru"
+vault_login: svc_mirage_prod
+vault_kafka_cert_path: "secret=mirage/data/certs/kafkacerts:p_m_kfk.cer"
+vault_kafka_key_path: "secret=mirage/data/certs/kafkacerts:p_m_kfk.key"
+vault_bundle_path: "secret=mirage/data/certs/nspkca:bundle_prod.cer"
+kafka_cert: p_m_kfk.cer
+kafka_key: p_m_kfk.key
+bundle_file: bundle_prod.cer
+### Deploy-jmx_exporter vars
+jmx_dir: /apps/jmx_exporter
+broker: broker.yml
+zookeeper: zookeeper.yml
+schema_registry: schema_registry.yml
+kafka_systemd_path: /etc/systemd/system/confluent-kafka.service.d/override.conf
+zoo_systemd_path: /etc/systemd/system/confluent-zookeeper.service.d/override.conf
+schema_systemd_path: /etc/systemd/system/confluent-schema-registry.service.d/override.conf
+zoo_metric_port: 8079
+kafka_metric_port: 8080
+schema_registry_metric_port: 8078
+javaagent_url: https://repo.idc.nspk.ru/repository/nspk-raw-third/prometheus/javaagent/
+javaagent_file: jmx_prometheus_javaagent-0.17.2.jar
+### vmagent file
+vmagent: vmagent-kafka.yaml
+

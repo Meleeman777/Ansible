@@ -1,0 +1,10 @@
+- name: Apply Nginx template (portal)
+  template:
+    src: '{{ nginx_portal }}.j2'
+    dest: '{{ nginx_path }}/{{ nginx }}'
+  notify: Reload Nginx
+- name: Install nginx server (portal)
+  template:
+    src: '{{ mirage_portal }}.j2'
+    dest:  '{{ server_path }}/mirage_portal.conf'
+  notify: Reload Nginx
