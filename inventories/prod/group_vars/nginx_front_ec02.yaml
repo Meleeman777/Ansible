@@ -1,3 +1,3 @@
-vm_url: "ec02-dmz-mon-prx.idc.nspk.ru"
-upstream: "10.232.21.21"
+vm_url: ""
+upstream: ""
 nginx_ec: ec02

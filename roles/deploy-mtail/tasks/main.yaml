@@ -29,7 +29,7 @@
 - name: chown and chmod folder
   shell: |
       sudo chmod ug+rx '{{ mtail_dir }}'
-      sudo chown -R nspkop:nspkop '{{ mtail_dir }}'
+      sudo chown -R '{{ mtail_dir }}'
       sudo setfacl -R -m u:www-data:rwx /apps/mtail
 - name: reload nginx
   service:

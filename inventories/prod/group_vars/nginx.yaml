@@ -3,13 +3,13 @@ keep_systemd_path: /etc/systemd/system
 keep_dir: /apps/keepalived_exporter
 keep_file: keepalived-exporter-1.2.0.linux-amd64
 keep_service_file: keepalived_exporter.service
-keep_url: https://repo.idc.nspk.ru/repository/nspk-raw-third/keepalived-exporter/
+keep_url: https://
 keep_archive: keepalived-exporter-1.2.0.linux-amd64.tar.gz
 ### Deploy mtail vars
 mtail_dir: /apps/mtail
 mtail_service_file: mtail.service
 mtail_systemd_path: /etc/systemd/system
-mtail_url: https://repo.idc.nspk.ru/repository/nspk-raw-third/google/mtail/
+mtail_url: https://
 mtail_archive: mtail_3.0.0-rc51_Linux_x86_64.tar.gz
 ### Deploy-nginx-configs vars
 nginx_path: /etc/nginx
@@ -21,11 +21,11 @@ nginx_front: nginx_front_prod.conf
 mirage_front: mirage_front_prod.conf
 ### Deploy Certs vars
 nginx_cert_path: /etc/pki/nginx
-vault_path: "https://vault.idc.nspk.ru/"
-vault_login: svc_mirage_prod
-vault_nginx_cert_path: "secret=mirage/data/certs/nginxcerts:p_m_proxy_ID.cer"
-vault_nginx_key_path: "secret=mirage/data/certs/nginxcerts:p_m_proxy_ID.key"
-vault_bundle_path: "secret=mirage/data/certs/nspkca:bundle_prod.cer"
+vault_path: "https://"
+vault_login:
+vault_nginx_cert_path: "secret="
+vault_nginx_key_path: "secret="
+vault_bundle_path: "secret="
 nginx_cert: p_m_proxy_ID.cer
 nginx_key: p_m_proxy_ID.key
 bundle_file: bundle_prod.cer

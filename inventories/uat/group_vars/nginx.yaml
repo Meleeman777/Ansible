@@ -1,27 +1,27 @@
 ### Deploy blackbox_exporter vars
 blackbox_dir: /apps/blackbox_exporter
-blackbox_url: https://repo.unix.nspk.ru/repository/ubuntu-jammy/pool/universe/p/prometheus-blackbox-exporter/
+blackbox_url: https://
 blackbox_package: prometheus-blackbox-exporter_0.19.0-1_amd64.deb
 blackbox_service_file: prometheus-blackbox-exporter.service
 blackbox_systemd_path: /etc/systemd/system/multi-user.target.wants
 blackbox_targets:
-  - https://msk1-mirageuiprx1.unix.nspk.ru:6000
-  - https://msk1-mirageuiprx2.unix.nspk.ru:6000
-  - https://msk1-mirageufprx3.unix.nspk.ru:6100
-  - https://msk1-mirageufprx4.unix.nspk.ru:6100
+  - https://
+  - https://
+  - https://
+  - https://
 blackbox_file: blackbox.yaml
 ### Deploy keepalived_exporter vars
 keep_systemd_path: /etc/systemd/system
 keep_dir: /apps/keepalived_exporter
 keep_file: keepalived-exporter-1.2.0.linux-amd64
 keep_service_file: keepalived_exporter.service
-keep_url: https://repo.unix.nspk.ru/repository/nspk-raw-third/keepalived-exporter/
+keep_url: https://
 keep_archive: keepalived-exporter-1.2.0.linux-amd64.tar.gz
 ### Deploy mtail vars
 mtail_dir: /apps/mtail
 mtail_service_file: mtail.service
 mtail_systemd_path: /etc/systemd/system
-mtail_url: https://repo.unix.nspk.ru/repository/nspk-raw-third/google/mtail/
+mtail_url: https://
 mtail_archive: mtail_3.0.0-rc51_Linux_x86_64.tar.gz
 ### Deploy-nginx-configs vars
 nginx_path: /etc/nginx
@@ -33,9 +33,9 @@ nginx_front: nginx_front_uat.conf
 mirage_front: mirage_front_uat.conf
 ### Deploy-certs vars
 nginx_cert_path: /etc/pki/nginx
-vault_nginx_cert_path: "secret=mirage/data/mirage_uat/certs/nginxcerts:q_m_proxy_ID.cer"
-vault_nginx_key_path: "secret=mirage/data/mirage_uat/certs/nginxcerts:q_m_proxy_ID.key"
-vault_bundle_path: "secret=mirage/data/mirage_uat/certs/nspkca:bundle_uat.cer"
+vault_nginx_cert_path: "secret="
+vault_nginx_key_path: "secret="
+vault_bundle_path: "secret=r"
 nginx_cert: q_m_proxy_ID.cer
 nginx_key: q_m_proxy_ID.key
 bundle_file: bundle_uat.cer

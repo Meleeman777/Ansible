@@ -1,19 +1,19 @@
 ### Deploy blackbox_exporter vars
 blackbox_dir: /apps/blackbox_exporter
-blackbox_url: https://repo.unix.nspk.ru/repository/ubuntu-jammy/pool/universe/p/prometheus-blackbox-exporter/
+blackbox_url: https://
 blackbox_package: prometheus-blackbox-exporter_0.19.0-1_amd64.deb
 blackbox_service_file: prometheus-blackbox-exporter.service
 blackbox_systemd_path: /etc/systemd/system/multi-user.target.wants
 blackbox_targets:
-  - https://msk1-mirageukfk01.unix.nspk.ru:8081/subjects
-  - https://msk1-mirageukfk02.unix.nspk.ru:8081/subjects
-  - https://msk1-mirageukfk03.unix.nspk.ru:8081/subjects
+  - https://
+  - https://
+  - https://
 blackbox_file: blackbox.yaml
 ### Deploy Certs vars
 kafka_cert_path: /apps/confluent/etc/kafka
-vault_kafka_cert_path: "secret=mirage/data/mirage_uat/certs/kafkacerts:q_m_kfk.cer"
-vault_kafka_key_path: "secret=mirage/data/mirage_uat/certs/kafkacerts:q_m_kfk.key"
-vault_bundle_path: "secret=mirage/data/mirage_uat/certs/nspkca:bundle_uat.cer"
+vault_kafka_cert_path: "secret="
+vault_kafka_key_path: "secret="
+vault_bundle_path: "secret="
 kafka_cert: q_m_kfk.cer
 kafka_key: q_m_kfk.key
 bundle_file: bundle_uat.cer
@@ -28,7 +28,7 @@ schema_systemd_path: /etc/systemd/system/confluent-schema-registry.service.d/ove
 zoo_metric_port: 8079
 kafka_metric_port: 8080
 schema_registry_metric_port: 8078
-javaagent_url: https://repo.unix.nspk.ru/repository/nspk-raw-third/prometheus/javaagent/
+javaagent_url: https://
 javaagent_file: jmx_prometheus_javaagent-0.17.2.jar
 ### Vmagent file
 vmagent: vmagent-kafka.yaml

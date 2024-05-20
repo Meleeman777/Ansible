@@ -3,8 +3,8 @@ Description=VMagent
 After=network.target
 
 [Service]
-User=nspkop
-Group=nspkop
+User=
+Group=
 Type=simple
 EnvironmentFile=/apps/vmagent_systemd/.env
 ExecStart=/apps/vmagent_systemd/vmagent-prod \

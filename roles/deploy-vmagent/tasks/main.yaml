@@ -26,7 +26,7 @@
 - name: chown and chmod folder
   shell: |
       sudo chmod ug+rx '{{ vm_path }}'
-      sudo chown -R nspkop:nspkop /apps/vmagent_systemd
+      sudo chown -R  /apps/vmagent_systemd
 - name: Enable env.vars
   shell: |
       cd /apps/vmagent_systemd/

@@ -24,8 +24,8 @@
 - name: Change vmagent file permission
   file:
     path: '{{ vm_path }}/vmagent.yml'
-    owner: nspkop
-    group: nspkop
+    owner:
+    group:
 - name: reload systemd daemons
   systemd:
     daemon_reload: true
